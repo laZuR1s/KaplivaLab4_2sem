@@ -1,6 +1,6 @@
 ﻿#include <iostream>
 #include <fstream>
-#include<Windows.h>
+#include <Windows.h>
 
 const int n = 35;
 const int m = 15;
@@ -18,6 +18,7 @@ void enter_combination(char* file_name);
 // task
 
 bool contains_on(char* word, char* combination);
+void reverseStr(char* word);
 void swap_words(char* word1, char* word2);
 void simple_choice_sort(char matrix[][m], int row);
 void task(std::ifstream& input, std::ofstream& output, char* combination);
@@ -71,8 +72,7 @@ void enter_combination(char* file_name)
 {
 
 	bool flag = false;
-	while (!flag)
-	{
+
 		std::cout << "\nВведите подстроку из двух символов: ";
 		char c = getchar();
 		int i{};
@@ -81,10 +81,8 @@ void enter_combination(char* file_name)
 			file_name[i++] = c;
 			c = getchar();
 		}
-		if (i == 2)
-			flag = true;
+
 		file_name[i] = '\0';
-	}
 	
 
 }
@@ -140,18 +138,47 @@ bool contains_on(char* word, char* combination)
 {
 	bool result = false;
 	int i = 0;
-	while (i < strlen(word) && !result)
-	{
-		if (word[i] == combination[0] && word[i + 1] == combination[1] || word[i] == combination[1] && word[i + 1] == combination[0])
-			result = true;
-		++i;
-	}
+	char* p = 0;
+	
+	//while (i < strlen(word) && !result)
+	//{
+	//	//if (word[i] == combination[0] && word[i + 1] == combination[1] || word[i] == combination[1] && word[i + 1] == combination[0])
+	//	//	result = true;
+	//	//++i;
+	//}
+		p = (char*)std::memchr(word,combination[0],strlen(word));
+		if (p)
+		{
+			if (strncmp(combination, p, strlen(combination)) == 0)
+				result = true;
+			
+		}
+		
+		reverseStr(combination);
+		
+		p = 0;
+		p = (char*)std::memchr(word, combination[0], strlen(word));
+		if (p)
+		{
+			if (strncmp(combination, p, strlen(combination)) == 0)
+				result = true;
 
-
+		}
 
 	return result;
 }
 
+
+void reverseStr(char* word)
+
+{
+
+	int n = strlen(word);
+	for (int i = 0; i < n / 2; i++)
+
+		std::swap(word[i], word[n - i - 1]);
+
+}
 
 void swap_words(char* word1, char* word2)
 {
